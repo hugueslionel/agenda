@@ -89,6 +89,9 @@
             <h1>📅 Mon Agenda</h1>
             <div class="header-actions">
                 <span id="syncStatus" style="font-size:14px; color:#ffd93d; font-weight:bold;"></span>
+                <button onclick="exportAgenda()" class="btn-sync" style="background:#6c757d; color:white;">📥 Export</button>
+                <button onclick="document.getElementById('importFile').click()" class="btn-sync" style="background:#6c757d; color:white;">📤 Import</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importAgenda(event)">
                 <button class="btn-sync" onclick="saveToCloud()">☁️ Synchroniser</button>
             </div>
         </div>

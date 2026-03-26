@@ -231,6 +231,52 @@
             }
         });
 
+        // --- EXPORTATION (Télécharger le fichier) ---
+        function exportAgenda() {
+            const dataStr = JSON.stringify({ events, notes }, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+            const exportFileDefaultName = 'backup_agenda_' + new Date().toISOString().slice(0,10) + '.json';
+    
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+// --- IMPORTATION (Lire un fichier local) ---
+        function importAgenda(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+            
+                    if (confirm("Voulez-vous remplacer vos données actuelles par celles de ce fichier ?")) {
+                        // Mise à jour des variables globales
+                        events = importedData.events || {};
+                        notes = importedData.notes || [];
+                
+                        // Sauvegarde locale et marquage "Dirty" pour inciter à synchro sur le cloud
+                        markDirty(); 
+                
+                        // Rafraîchissement de l'affichage
+                        renderCalendar();
+                        renderNotesList();
+                
+                        alert("Importation réussie ! N'oubliez pas de cliquer sur Synchroniser pour mettre à jour le cloud.");
+                    }
+                } catch (err) {
+                    alert("Erreur : Le fichier n'est pas un format d'agenda valide.");
+                }
+            };
+            reader.readAsText(file);
+    
+            // Reset de l'input pour permettre de ré-importer le même fichier si besoin
+            e.target.value = '';
+        }
 
         // === GESTION DES NOTES ===
         function addNote() {

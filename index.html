@@ -585,16 +585,11 @@
             banner.classList.add('has-alerts');
         }
 
-        // INIT — chargement local uniquement (pas de requête réseau au démarrage)
+        // INIT — chargement depuis le cloud au démarrage (fichier statique, aucun crédit Netlify)
         document.addEventListener('DOMContentLoaded', function() {
-            events = JSON.parse(localStorage.getItem('calendarEvents')) || {};
-            notes  = JSON.parse(localStorage.getItem('calendarNotes'))  || [];
-            renderCalendar();
-            renderNotesList();
-            checkAlerts();
-            setSyncStatus("💾 Local — cliquez ☁️ pour synchroniser", "#ffd93d");
             const savedWidth = localStorage.getItem('notesPanelWidth');
             if (savedWidth) document.getElementById('notesPanel').style.width = savedWidth + 'px';
+            loadAgenda();
         });
     </script>
 </body>

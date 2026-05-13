@@ -1,4 +1,21 @@
 {
-  "events": {},
+  "events": {
+    "2026-05-13": [
+      {
+        "title": "llkjj",
+        "time": "09:00",
+        "description": "",
+        "alert": false
+      }
+    ],
+    "2026-05-14": [
+      {
+        "title": "kjjj",
+        "time": "09:00",
+        "description": "",
+        "alert": true
+      }
+    ]
+  },
   "notes": []
 }

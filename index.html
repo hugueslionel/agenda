@@ -196,23 +196,38 @@
                 const res = await fetch('agenda.json?t=' + Date.now(), { cache: "no-store" });
                 if (res.ok) {
                     const text = await res.text();
-                    if (!text || text.trim() === "") {
-                        events = {}; notes = [];
+                    let data = null;
+                    if (text && text.trim() !== "") data = JSON.parse(text);
+
+                    const cloudEvents = data?.events || {};
+                    const cloudNotes  = data?.notes  || [];
+                    const cloudHasData = Object.keys(cloudEvents).length > 0 || cloudNotes.length > 0;
+
+                    const localHasData = Object.keys(events).length > 0 || notes.length > 0;
+
+                    if (cloudHasData) {
+                        // Cloud a des données : on les charge
+                        events = cloudEvents;
+                        notes  = cloudNotes;
+                        localStorage.setItem('calendarEvents', JSON.stringify(events));
+                        localStorage.setItem('calendarNotes',  JSON.stringify(notes));
+                        isDirty = false;
+                        setSyncStatus("✅ Chargé", "#4CAF50");
+                        setTimeout(() => setSyncStatus(""), 3000);
+                    } else if (localHasData) {
+                        // Cloud vide mais local a des données : on garde le local
+                        setSyncStatus("☁️ Cloud vide — données locales conservées", "#f59e0b");
+                        setTimeout(() => setSyncStatus(""), 4000);
                     } else {
-                        const data = JSON.parse(text);
-                        events = data.events || {};
-                        notes = data.notes || [];
+                        // Cloud vide et local vide : normal
+                        isDirty = false;
+                        setSyncStatus("✅ Chargé", "#4CAF50");
+                        setTimeout(() => setSyncStatus(""), 3000);
                     }
-                    
-                    // Sauvegarde locale et reset dirty
-                    localStorage.setItem('calendarEvents', JSON.stringify(events));
-                    localStorage.setItem('calendarNotes', JSON.stringify(notes));
-                    isDirty = false;
-                    
+
                     renderCalendar();
                     renderNotesList();
-                    setSyncStatus("✅ Chargé", "#4CAF50");
-                    setTimeout(() => setSyncStatus(""), 3000);
+                    checkAlerts();
                     return;
                 }
             } catch (e) {

@@ -104,7 +104,6 @@
 <body>
     <div class="container">
 
-        <!-- Bannière d'alertes -->
         <div id="alertBanner">
             <div class="alert-title">
                 <span>🔔 Rappels importants</span>
@@ -193,7 +192,8 @@
         async function loadAgenda() {
             setSyncStatus("🔄 Chargement...", "#ffd93d");
             try {
-                const res = await fetch('agenda.json?t=' + Date.now(), { cache: "no-store" });
+                // MODIFICATION ICI : On interroge la fonction Netlify au lieu du fichier statique
+                const res = await fetch('/.netlify/functions/load-agenda?t=' + Date.now(), { cache: "no-store" });
                 if (res.ok) {
                     const text = await res.text();
                     let data = null;
@@ -286,7 +286,7 @@
             linkElement.click();
         }
 
-// --- IMPORTATION (Lire un fichier local) ---
+        // --- IMPORTATION (Lire un fichier local) ---
         function importAgenda(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -556,6 +556,7 @@
             editingEventId = null;
         }
 
+        // Navigation mois
         function previousMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); }
         function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); }
 
@@ -600,7 +601,7 @@
             banner.classList.add('has-alerts');
         }
 
-        // INIT — chargement depuis le cloud au démarrage (fichier statique, aucun crédit Netlify)
+        // INIT — chargement depuis le cloud au démarrage
         document.addEventListener('DOMContentLoaded', function() {
             const savedWidth = localStorage.getItem('notesPanelWidth');
             if (savedWidth) document.getElementById('notesPanel').style.width = savedWidth + 'px';

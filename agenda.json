@@ -15,6 +15,54 @@
         "description": "",
         "alert": true
       }
+    ],
+    "2026-11-03": [
+      {
+        "title": "Conseil école",
+        "time": "17:30",
+        "description": "",
+        "alert": true
+      }
+    ],
+    "2027-03-16": [
+      {
+        "title": "Conseil école",
+        "time": "17:30",
+        "description": "",
+        "alert": true
+      }
+    ],
+    "2027-06-08": [
+      {
+        "title": "Conseil école",
+        "time": "17:30",
+        "description": "",
+        "alert": true
+      }
+    ],
+    "2026-09-08": [
+      {
+        "title": "Conseil Maître",
+        "time": "12:30",
+        "description": "",
+        "alert": true
+      }
+    ],
+    "2026-10-09": [
+      {
+        "title": "Conseil cycle",
+        "time": "12:30",
+        "description": "",
+        "alert": true
+      }
+    ],
+    "2026-11-16": [
+      {
+        "title": "Conseil Maître",
+        "time": "12:30",
+        "description": "",
+        "alert": true
+      }
     ]
   },
   "notes": []
